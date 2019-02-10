@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-import common.queue as queue
+from common import queue
 import threading as threading
 
 
@@ -36,42 +36,66 @@ class WorkerThread(threading.Thread):
             # TODO : Handle errors coming out of running the task.
             # This must be different from error to be handled out of
             # Queue handling
+            pass
 
     def stop(self):
         self._stop_event.set()
 
     def close(self):
-        pass
+        # Stop the thread.
+        self.stop()
+        # TODO : What else do we want to do.
 
 
 class WorkerPool(object):
     MAXSIZE = 3000
     MAX_PARALLEL_TASK = 10
 
-    def __init__(self):
+    def __init__(self, max_parallel=None):
         '''
         A worker pool that simply takes job from pending tasks and
         assigns to one of the worker threads.
         '''
         self._pending_tasks = queue.PriorityQueue(maxsize=WorkerPool.MAXSIZE)
         self._finished_tasks = queue.PriorityQueue(maxsize=WorkerPool.MAXSIZE)
+        self._max_parallel_tasks = max_parallel if not None else self.MAX_PARALLEL_TASK
 
         self._handlers = []
         pass
+
+    def append_task(self, task):
+        try:
+            self._pending_tasks.put(task)
+        except Exception as err:
+            # What happens when queue is full and we cann't put elements in it.
+            pass
+
+    def close(self):
+        for handler in self._handlers:
+            handler.stop()
 
 
 class ThreadedPool(WorkerPool):
 
     def __init__(self):
+        super(ThreadedPool, self).__init__()
+
         for i in range(self.MAX_PARALLEL_TASK):
             self._handlers = threading.Thread()
-        super(ThreadedPool, self).__init__()
-        pass
+
+        self.initialize()
+
+    def initialize(self):
+        # Initialize the handlers.
+        self._handlers = [ WorkerThread(in_queue=self._pending_tasks,
+                                        out_queue=self._finished_tasks)
+                                    for i in range(self.MAX_PARALLEL_TASK) ]
 
 
 class MultiprocessingPool(WorkerPool):
 
     def __init__(self):
+        # TODO :
         super(MultiprocessingPool, self).__init__()
         pass
 

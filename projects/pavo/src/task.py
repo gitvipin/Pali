@@ -7,7 +7,7 @@ class Task(object):
     (NEW, READY, RUNNING, WAITING, FINISHED) = range(5)
 
     def __init__(self):
-        self._state = NEW
+        self._state = self.NEW
 
     @property
     def state(self):
@@ -28,6 +28,7 @@ class Task(object):
             self._run()
         except Exception as err:
             # TODO: Do Task Failure to run exception handling
+            pass
 
     def _run(self):
         pass
@@ -36,4 +37,4 @@ class Task(object):
 
 if __name__ == '__main__':
     t = Task()
-    r.run()
+    t.run()
