@@ -8,18 +8,31 @@ import threading as threading
 class WorkerThread(threading.Thread):
 
     def __init__(self, in_queue, out_queue, name=None):
-        self._stop_event = threading.Event()
+        threading.Thread.__init__(self)
         self._input_queue = in_queue
         self._output_queue = out_queue
 
-    def start(self):
+        # Thread control mechanism
+        self._stop_event = threading.Event()
+        self._stop_event.clear()
+
+        # Set daemon thread, since run method does
+        # blocking wait on items from queue
+        self.daemon = True
+
+    def run(self):
         while True and not self._stop_event.is_set():
             try:
+                t = threading.current_thread()
+                print t.name, " popping an element"
+
                 # This is a blocking call.
                 task = self._input_queue.get()
 
+                print t.name, " popped an item"
+
                 # We handle only task.Task based requests.
-                assert(isinstance(task, task.Task))
+                #assert(isinstance(task, task.Task))
 
                 self.run_task(task)
 
@@ -27,6 +40,8 @@ class WorkerThread(threading.Thread):
 
             except Exception as err:
                 pass
+
+        print "Finished execution"
 
 
     def run_task(self, task):
@@ -71,25 +86,26 @@ class WorkerPool(object):
             pass
 
     def close(self):
+        self._pending_tasks.join()
         for handler in self._handlers:
             handler.stop()
 
 
 class ThreadedPool(WorkerPool):
 
-    def __init__(self):
-        super(ThreadedPool, self).__init__()
-
-        for i in range(self.MAX_PARALLEL_TASK):
-            self._handlers = threading.Thread()
-
+    def __init__(self, max_threads=None):
+        super(ThreadedPool, self).__init__(max_parallel=max_threads)
         self.initialize()
 
     def initialize(self):
         # Initialize the handlers.
         self._handlers = [ WorkerThread(in_queue=self._pending_tasks,
                                         out_queue=self._finished_tasks)
-                                    for i in range(self.MAX_PARALLEL_TASK) ]
+                                    for i in range(self._max_parallel_tasks) ]
+
+    def start(self):
+        for handler in self._handlers:
+            handler.start()
 
 
 class MultiprocessingPool(WorkerPool):
