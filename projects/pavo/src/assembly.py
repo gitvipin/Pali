@@ -28,7 +28,9 @@ IP addresses of endpoints to be configured.
 
 import abc
 import logging
-import task as task
+import task
+import worker
+
 
 class Stage(task.Task):
 
@@ -37,37 +39,65 @@ class Stage(task.Task):
     """
 
     __metaclass__ = abc.ABCMeta
+    WAITING = 0x1
+    RUNNING = 0x1 << 1
+    PASSED = 0x1 << 2
+    FAILED = 0x1 << 3
 
-    def __init__(self):
-        self._next= None
+    def __init__(self, name):
+        self.name = name
+
+        self._state = self.WAITING
+        self._next = None
+
         self.log = logging.getLogger(__name__)
 
-    @abc.abstractmethod
-    def _run(self, data):
-        """
-        override this.  The data map can be used to pass runtime messages
-        to the next stage
-        """
-        pass
 
+class Pipeline(task.Task):
 
-class Pipeline(object):
-
-    def __init__(self):
+    def __init__(self, stages, data):
         """
         A pipeline is a collection of pipeline stages.
         """
         self.stages = []
+        self.data = data
+        self.log = logging.getLogger(__name__)
+
+    def _run(self):
+        for stage in self._stages:
+            try:
+                stage.run(self.data)
+            except Exception as err:
+                # TODO : Do better Error handling
+                self.log.error("Pipeline Error : %r", err)
+
+                # if a pipeline stage fais we need to stop the execution.
+                break
 
 
+class Assembly(task.Task):
 
-class Assembly(object):
+    MAX_CONCURRENT_PIPELINES = 5
 
-    def __init__(self):
+    def __init__(self, pipelines=None, max_concurrent_pipelines=None):
         '''
         Assembly is a collection of pipelines.
         '''
-        self.pipelines = []
+        self.pipelines = pipelines if pipelines else []
+        self.max_threads = max_concurrent_pipelines if max_concurrent_pipelines is not None else self.MAX_CONCURRENT_PIPELINES
+
+    def _run(self):
+
+        tpool = worker.ThreadPool(self.max_threads)
+
+        for pipeline in self.pipelines:
+            tpool.append_task(pipeline)
+
+        tpool.close()
+
+
+
+
 
 
 
