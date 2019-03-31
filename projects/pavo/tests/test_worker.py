@@ -2,8 +2,16 @@
 
 import Queue
 import threading
-import worker
-import main
+import src.worker as worker
+import src.task as task
+
+class MyTask(task.Task):
+
+    def __init__(self, index):
+        self._id = index
+
+    def _run(self):
+        pass
 
 soln = {}
 
@@ -28,7 +36,7 @@ for i in range(num_worker_threads):
     t.start()
 
 for i in range(10):
-    item = main.MyTask(i)
+    item = MyTask(i)
     q.put(item)
 
 q.join()
