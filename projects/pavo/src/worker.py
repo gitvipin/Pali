@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+'''
+This module provides core implementation of ThreadPool.
+'''
 
 from common import queue
 import threading as threading
@@ -7,10 +9,13 @@ import threading as threading
 
 class WorkerThread(threading.Thread):
 
-    def __init__(self, in_queue, out_queue, name=None):
+    def __init__(self, in_queue, out_queue, name=None, verbose=False):
+
         threading.Thread.__init__(self)
+
         self._input_queue = in_queue
         self._output_queue = out_queue
+        self._verbose = verbose
 
         # Thread control mechanism
         self._stop_event = threading.Event()
@@ -23,13 +28,15 @@ class WorkerThread(threading.Thread):
     def run(self):
         while True and not self._stop_event.is_set():
             try:
-                t = threading.current_thread()
-                print t.name, " popping an element"
+                if self._verbose:
+                    t = threading.current_thread()
+                    print t.name, " popping an element"
 
                 # This is a blocking call.
                 task = self._input_queue.get()
 
-                print t.name, " popped an item"
+                if self._verbose:
+                    print t.name, " popped an item"
 
                 # We handle only task.Task based requests.
                 #assert(isinstance(task, task.Task))
@@ -95,7 +102,6 @@ class ThreadedPool(WorkerPool):
 
     def __init__(self, max_threads=None):
         super(ThreadedPool, self).__init__(max_parallel=max_threads)
-        self.initialize()
 
     def initialize(self):
         # Initialize the handlers.
@@ -107,6 +113,11 @@ class ThreadedPool(WorkerPool):
         for handler in self._handlers:
             handler.start()
 
+    def __enter__(self):
+        self.initialize()
+
+    def __exit__(self, _type, value, traceback):
+        self.close()
 
 class MultiprocessingPool(WorkerPool):
 
@@ -114,5 +125,3 @@ class MultiprocessingPool(WorkerPool):
         # TODO :
         super(MultiprocessingPool, self).__init__()
         pass
-
-
