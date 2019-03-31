@@ -98,10 +98,11 @@ class WorkerPool(object):
             handler.stop()
 
 
-class ThreadedPool(WorkerPool):
+class ThreadPool(WorkerPool):
 
     def __init__(self, max_threads=None):
-        super(ThreadedPool, self).__init__(max_parallel=max_threads)
+        super(ThreadPool, self).__init__(max_parallel=max_threads)
+        self.initialize()
 
     def initialize(self):
         # Initialize the handlers.
@@ -114,7 +115,8 @@ class ThreadedPool(WorkerPool):
             handler.start()
 
     def __enter__(self):
-        self.initialize()
+        self.start()
+        return self
 
     def __exit__(self, _type, value, traceback):
         self.close()
