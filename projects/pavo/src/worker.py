@@ -97,6 +97,13 @@ class WorkerPool(object):
         for handler in self._handlers:
             handler.stop()
 
+    def remaining(self):
+        """Returns (approx.) number of pending tasks."""
+        return self._pending_tasks.qsize()
+
+    def finished(self):
+        return self._finished_tasks.qsize()
+
 
 class ThreadPool(WorkerPool):
 
