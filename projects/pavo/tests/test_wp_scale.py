@@ -34,7 +34,7 @@ class TestWorkerPoolScale(unittest.TestCase):
 
     def test_large_pending_tasks(self):
         """
-        Scale test for pushing 3000 tasks on worker pool
+        Scale test for pushing 3000 tasks on worker pool.
         """
         PENDING_TASK_COUNT = 3000
         tasks = [MyTask(i) for i in range(PENDING_TASK_COUNT)]
@@ -44,7 +44,9 @@ class TestWorkerPoolScale(unittest.TestCase):
         tpool = worker.ThreadPool(thr_count)
 
         # Push tasks on pool but don't start pool yet so as we can
-        # test the number of pending tasks.
+        # test the number of pending tasks. This testcase also highlights
+        # the importance of having both the abilities for WorkerPool:
+        # a) As context manager as well as b) respective API based invocations.
         for t in tasks:
             tpool.append_task(t)
 
