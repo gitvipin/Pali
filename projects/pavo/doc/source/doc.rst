@@ -10,3 +10,6 @@ To run individual tests
 
 To run all the tests in the directory.
     python -munittest discover -s ./tests/ -t .
+
+Run all tests from root directory and get report
+    python -munittest discover ./tests -v

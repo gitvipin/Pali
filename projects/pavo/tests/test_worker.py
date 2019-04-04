@@ -31,7 +31,7 @@ thr = []
 for i in range(num_worker_threads):
     # t = threading.Thread(target=worker)
     # t.daemon = True
-    t = worker.WorkerThread(in_queue=q, out_queue=None, verbose=True)
+    t = worker.WorkerThread(in_queue=q, out_queue=None, verbose=False)
     thr.append(t)
     t.start()
 
