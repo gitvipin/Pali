@@ -13,3 +13,8 @@ To run all the tests in the directory.
 
 Run all tests from root directory and get report
     python -munittest discover ./tests -v
+
+Generating Package
+    - python3 setup.py sdist bdist_wheel
+    - https://packaging.python.org/tutorials/packaging-projects/
+
