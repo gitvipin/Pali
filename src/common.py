@@ -19,7 +19,3 @@ elif PYTHON_3:
 
 
 queue = queue
-
-
-
-

@@ -55,12 +55,12 @@ class Stage(task.Task):
 
 class Pipeline(task.Task):
 
-    def __init__(self, stages, data):
+    def __init__(self, stages, data=None):
         """
         A pipeline is a collection of pipeline stages.
         """
         self.stages = []
-        self.data = data
+        self.data = data if data else {}
         self.log = logging.getLogger(__name__)
 
     def _run(self):
@@ -94,11 +94,3 @@ class Assembly(task.Task):
             tpool.append_task(pipeline)
 
         tpool.close()
-
-
-
-
-
-
-
-

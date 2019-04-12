@@ -127,10 +127,3 @@ class ThreadPool(WorkerPool):
 
     def __exit__(self, _type, value, traceback):
         self.close()
-
-class MultiprocessingPool(WorkerPool):
-
-    def __init__(self):
-        # TODO :
-        super(MultiprocessingPool, self).__init__()
-        pass

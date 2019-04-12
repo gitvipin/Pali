@@ -58,12 +58,3 @@ class Task(object):
         functionality of task will be run through this helper routine.
         """
         raise NotImplemented("Abstract method '_run' need to be defined")
-        pass
-
-if __name__ == '__main__':
-    class MyTask(Task):
-        def _run(self):
-            pass
-
-    t = MyTask()
-    t.run()
