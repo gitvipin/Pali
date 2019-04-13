@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import setuptools
 
 import setuptools
 
@@ -8,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pali",
-    version="0.1",
+    version="0.0.1",
     author="Vipin Sharma",
     author_email="sh.vipin@gmail.com",
     description="A simple ThreadPool library",
