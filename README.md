@@ -1,14 +1,14 @@
-# Pavo
+# Pali
 
-Pavo is a simple Thread Pool library for Python. It is compatible with Python3 as well as Python2.
+Pali is a simple Thread Pool library for Python. It is compatible with Python3 as well as Python2.
 
-Best way to learn about Pavo is through examples (example_URL)  and documentation (documentation_URL).
+Best way to learn about Pali is through examples (example_URL)  and documentation (documentation_URL).
 You can make contributions to it at github . Please make sure all tests(test_url) are passing.
 
 
-Pavo can be used for:
+Pali can be used for:
 
-- Creating Data Pipelines. 
+- Creating Data Pipelines.
 - Handling requests in Messaging Brokers (on the top of TCP/IP layer).
 - Simulating any stress testing systems.
 - API Testing systems.
@@ -18,7 +18,7 @@ Pavo can be used for:
 Documentation
 -------------
 
-Latest documentation https://pavo.readthedocs.io/en/latest/
+Latest documentation https://pali.readthedocs.io/en/latest/
 
 Requirements
 ------------

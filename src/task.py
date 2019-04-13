@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 '''
-This module represents the Basic Task in Pavo system.
+This module represents the Basic Task in Pali system.
 
 
 A Task has a well defined life cycle and is treated accordingly. All
-the Tasks in the Pavo system MUST be derived from it. This class in
+the Tasks in the Pali system MUST be derived from it. This class in
 itself is non-instantiable with the help of abstract method 'run' and
 '_run'.
 
@@ -54,7 +54,7 @@ class Task(object):
     @abc.abstractmethod
     def _run(self):
         """
-        A helper 'run' routine for running Tasks in pavo system. The core
+        A helper 'run' routine for running Tasks in Pali system. The core
         functionality of task will be run through this helper routine.
         """
         raise NotImplemented("Abstract method '_run' need to be defined")

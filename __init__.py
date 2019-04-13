@@ -1,1 +1,1 @@
-name = "pavo"
+name = "pali"
