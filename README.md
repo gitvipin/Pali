@@ -34,7 +34,7 @@ as context manager.
 # create 10 tasks
 >>> tasks = [MyTask(i) for i in range(10)]
 
-# Start a Thread Pool and push tasks on it.
+# Start a Thread Pool with 3 thread and push tasks on it.
 # Tasks are processed as and when they come.
 >>> with worker.ThreadPool(3) as tpool:
 ...     _ = [tpool.append_task(t) for t in tasks]
@@ -45,7 +45,7 @@ as context manager.
 [True, True, True, True, True, True, True, True, True, True]
 ```
 
-Further examples can be found at https://github.com/gitvipin/Pali/tree/master/tests that reflect different ways os using ThreadPool.
+Further examples can be found at https://github.com/gitvipin/Pali/tree/master/tests that reflect different ways of using ThreadPool.
 
 
 Requirements
