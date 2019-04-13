@@ -15,7 +15,7 @@ Pali is simple to use. Pali's Worker Pool works on tasks with well defined inter
 New Tasks can be extended from it as following. ```_run``` method is important and mandatory to define as the
 Thread Pool internally looks and invokes this function as start of the task.
 
-```
+```python
 >>> from pali import worker, task
 >>> class MyTask(task.Task):
 ...     def __init__(self, ident):
@@ -30,7 +30,7 @@ Thread Pool internally looks and invokes this function as start of the task.
 Thread Pool in itself can work either as context manager or can be invoked manually. Example below shows it's use
 as context manager.
 
-```
+```python
 # create 10 tasks
 >>> tasks = [MyTask(i) for i in range(10)]
 
