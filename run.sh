@@ -15,8 +15,13 @@ ln -s src/*.py .
 rm -rf tests
 mv LICENSE README.md setup.py ../
 cd -
+
+# Build packages
 python3 setup.py sdist bdist_wheel
+
+# Upload packages.
 # python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 cd pali
 
 git clean -fX
