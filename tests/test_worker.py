@@ -2,8 +2,13 @@
 
 import Queue
 import threading
-import src.worker as worker
+
+import src.logger as logger
 import src.task as task
+import src.worker as worker
+
+
+log = logger.getLogger(__name__)
 
 class MyTask(task.Task):
 
@@ -43,4 +48,4 @@ q.join()
 for t in thr:
     t.stop()
     q.put(None)
-print soln
+log.info("Solution : %s", soln)

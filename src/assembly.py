@@ -27,9 +27,10 @@ IP addresses of endpoints to be configured.
 '''
 
 import abc
-import logging
-import task
-import worker
+
+import src.logger as logger
+import src.task as task
+import src.worker as worker
 
 
 class Stage(task.Task):
@@ -50,7 +51,7 @@ class Stage(task.Task):
         self._state = self.WAITING
         self._next = None
 
-        self.log = logging.getLogger(__name__)
+        self.log = logger.getLogger(__name__)
 
 
 class Pipeline(task.Task):
@@ -61,7 +62,7 @@ class Pipeline(task.Task):
         """
         self.stages = []
         self.data = data if data else {}
-        self.log = logging.getLogger(__name__)
+        self.log = logger.getLogger(__name__)
 
     def _run(self):
         for stage in self._stages:

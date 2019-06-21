@@ -3,9 +3,12 @@
 This module provides core implementation of ThreadPool.
 '''
 
-from common import queue
 import threading as threading
 
+from src.common import queue
+import src.logger as logger
+
+log = logger.getLogger(__name__)
 
 class WorkerThread(threading.Thread):
 
@@ -30,16 +33,16 @@ class WorkerThread(threading.Thread):
             try:
                 if self._verbose:
                     t = threading.current_thread()
-                    print t.name, " popping an element"
+                    log.debug(" Thread %s : popping element", t.name)
 
                 # This is a blocking call.
                 task = self._input_queue.get()
 
                 if self._verbose:
-                    print t.name, " popped an item"
+                    log.debug(" Thread %s : popped element", t.name)
 
                 # We handle only task.Task based requests.
-                #assert(isinstance(task, task.Task))
+                # assert(isinstance(task, task.Task))
 
                 self.run_task(task)
 
@@ -48,7 +51,7 @@ class WorkerThread(threading.Thread):
             except Exception as err:
                 pass
 
-        print "Finished execution"
+        log.info("Finished execution.")
 
 
     def run_task(self, task):
