@@ -19,11 +19,14 @@ class Task(object):
     (NEW, READY, RUNNING, WAITING, FINISHED) = range(5)
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self):
+    DEFAULT_PRIORITY = 1
+
+    def __init__(self, priority=None):
         """
         This class defines the abstract representation of Task.
         """
         self._state = self.NEW
+        self._priority = priority if priority else self.DEFAULT_PRIORITY
         super(Task, self).__init__()
 
     @property
@@ -58,3 +61,9 @@ class Task(object):
         functionality of task will be run through this helper routine.
         """
         raise NotImplemented("Abstract method '_run' need to be defined")
+
+    def __lt__(self, other):
+        """
+        A basic comparator function that compares tasks on their priority.
+        """
+        return self._priority > other._priority
