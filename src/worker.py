@@ -58,9 +58,7 @@ class WorkerThread(threading.Thread):
         try:
             task.run()
         except Exception as err:
-            # TODO : Handle errors coming out of running the task.
-            # This must be different from error to be handled out of
-            # Queue handling
+            log.exception("Exception in rrunning task %s , %r", task, err)
             pass
 
     def stop(self):
@@ -92,7 +90,7 @@ class WorkerPool(object):
         try:
             self._pending_tasks.put(task)
         except Exception as err:
-            # What happens when queue is full and we cann't put elements in it.
+            log.exception("Exception in adding task to queue %r", err)
             pass
 
     def close(self):
@@ -110,14 +108,16 @@ class WorkerPool(object):
 
 class ThreadPool(WorkerPool):
 
-    def __init__(self, max_threads=None):
+    def __init__(self, max_threads=None, verbose=False):
+        self._verbose = verbose
         super(ThreadPool, self).__init__(max_parallel=max_threads)
         self.initialize()
 
     def initialize(self):
         # Initialize the handlers.
         self._handlers = [ WorkerThread(in_queue=self._pending_tasks,
-                                        out_queue=self._finished_tasks)
+                                        out_queue=self._finished_tasks,
+                                        verbose=self._verbose)
                                     for i in range(self._max_parallel_tasks) ]
 
     def start(self):
