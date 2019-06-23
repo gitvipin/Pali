@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import Queue
 import threading
 
+from src.common import queue
 import src.logger as logger
 import src.task as task
 import src.worker as worker
@@ -30,22 +30,26 @@ def _worker():
          soln[tid] = x
          q.task_done()
 
-q = Queue.Queue()
-num_worker_threads = 3
-thr = []
-for i in range(num_worker_threads):
-    # t = threading.Thread(target=worker)
-    # t.daemon = True
-    t = worker.WorkerThread(in_queue=q, out_queue=None, verbose=False)
-    thr.append(t)
-    t.start()
+def test_simple():
+    q = queue.Queue()
+    num_worker_threads = 3
+    thr = []
+    for i in range(num_worker_threads):
+        # t = threading.Thread(target=worker)
+        # t.daemon = True
+        t = worker.WorkerThread(in_queue=q, out_queue=None, verbose=False)
+        thr.append(t)
+        t.start()
 
-for i in range(10):
-    item = MyTask(i)
-    q.put(item)
+    for i in range(10):
+        item = MyTask(i)
+        q.put(item)
 
-q.join()
-for t in thr:
-    t.stop()
-    q.put(None)
-log.info("Solution : %s", soln)
+    q.join()
+    for t in thr:
+        t.stop()
+        q.put(None)
+    log.info("Solution : %s", soln)
+
+if __name__ == '__main__':
+    test_simple()
