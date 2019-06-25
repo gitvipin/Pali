@@ -66,4 +66,4 @@ class Task(object):
         """
         A basic comparator function that compares tasks on their priority.
         """
-        return self._priority > other._priority
+        return self._priority < other._priority
