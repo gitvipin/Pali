@@ -74,24 +74,24 @@ class WorkerPool(object):
     MAXSIZE = 3000
     MAX_PARALLEL_TASK = 10
 
-    def __init__(self, max_parallel=None):
+    def __init__(self, max_parallel=None, max_queue_size=None):
         '''
         A worker pool that simply takes job from pending tasks and
         assigns to one of the worker threads.
         '''
-        self._pending_tasks = queue.Queue(maxsize=WorkerPool.MAXSIZE)
-        self._finished_tasks = queue.Queue(maxsize=WorkerPool.MAXSIZE)
+        maxsize = max_queue_size if max_queue_size else WorkerPool.MAXSIZE
         self._max_parallel_tasks = max_parallel if not None else self.MAX_PARALLEL_TASK
 
+        self._pending_tasks = queue.Queue(maxsize=maxsize)
+        self._finished_tasks = queue.Queue(maxsize=maxsize)
+
         self._handlers = []
-        pass
 
     def append_task(self, task):
         try:
             self._pending_tasks.put(task)
         except Exception as err:
             log.exception("Exception in adding task to queue %r", err)
-            pass
 
     def close(self):
         self._pending_tasks.join()
@@ -108,9 +108,10 @@ class WorkerPool(object):
 
 class ThreadPool(WorkerPool):
 
-    def __init__(self, max_threads=None, verbose=False):
+    def __init__(self, max_threads=None, max_queue_size=None, verbose=False):
         self._verbose = verbose
-        super(ThreadPool, self).__init__(max_parallel=max_threads)
+        super(ThreadPool, self).__init__(max_parallel=max_threads,
+                                         max_queue_size=max_queue_size)
         self.initialize()
 
     def initialize(self):
