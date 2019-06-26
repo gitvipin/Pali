@@ -58,7 +58,7 @@ class TestWorkerPool(unittest.TestCase):
         # Validate that all tasks passed.
         self.assertTrue(all(t.done for t in tasks))
 
-    def _test_task_order(self):
+    def test_task_order(self):
         """
         Tests that tasks are processed in same order. Uses ThreadPool
         in single Thread mode to enusre that tasks are processed in

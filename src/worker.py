@@ -79,8 +79,8 @@ class WorkerPool(object):
         A worker pool that simply takes job from pending tasks and
         assigns to one of the worker threads.
         '''
-        self._pending_tasks = queue.PriorityQueue(maxsize=WorkerPool.MAXSIZE)
-        self._finished_tasks = queue.PriorityQueue(maxsize=WorkerPool.MAXSIZE)
+        self._pending_tasks = queue.Queue(maxsize=WorkerPool.MAXSIZE)
+        self._finished_tasks = queue.Queue(maxsize=WorkerPool.MAXSIZE)
         self._max_parallel_tasks = max_parallel if not None else self.MAX_PARALLEL_TASK
 
         self._handlers = []
