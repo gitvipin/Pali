@@ -14,12 +14,12 @@ from src import worker
 
 
 log = logger.getLogger(__name__)
-# logger.getLogger("requests").setLevel(logging.WARNING)
-# logger.getLogger("urllib").setLevel(logging.WARNING)
+logger.getLogger("requests").setLevel(logging.WARNING)
+logger.getLogger("urllib").setLevel(logging.WARNING)
 
 class StockTask(task.Task):
     FIN_DATA_URL='https://www.alphavantage.co'
-    API_KEY='XXXX'
+    API_KEY='ADD_YOUR_KEY'
     FIN_DATA_TYPE='TIME_SERIES_DAILY_ADJUSTED'
 
     def __init__(self, tckr='TSLA'):
@@ -41,12 +41,10 @@ class StockTask(task.Task):
             r = requests.get(self.url)
             if r.status_code == 200:
                 self.data = json.loads(r.text)
-
-            opening = self.open_today()
-            log.info("%s opened at : %s", self.tckr, opening)
-
+                opening = self.open_today()
+                log.info("%s opened at : %s", self.tckr, opening)
         except Exception as err:
-            _ = err
+            log.exception("Tckr: %s , data: %s", self.tckr, self.data)
 
     def open_today(self):
         if not self.data:
@@ -62,14 +60,14 @@ def simple():
     with worker.ThreadPool(2) as tpool:
         _ = [tpool.append_task(t) for t in tasks]
 
-    open_today = [(x.tckr, x.open_today() if x.data else None) for x in tasks]
+    open_today = [(x.tckr, x.open_today()) for x in tasks if x.data]
 
     log.info("Open today : %s", open_today)
 
 def get_next_tckr():
     alphas = [chr(i).upper() for i in range(97, 97 + 26)]
 
-    for i in ['_'] + alphas:
+    for i in alphas + ['_']:
         for j in alphas:
             for k in alphas:
                 for l in alphas:
@@ -80,12 +78,11 @@ def scrapper():
     log.info("======================")
     log.info("    Start Scrapping  ")
     log.info("======================")
-    with worker.ThreadPool(2) as tpool:
+    with worker.ThreadPool(max_threads=15, max_queue_size=26**4) as tpool:
         for tckr in get_next_tckr():
+            # log.info("Appending task for : %s", tckr)
             task = StockTask(tckr)
             tpool.append_task(task)
-
-
 
 
 if __name__ == '__main__':
