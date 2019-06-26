@@ -14,8 +14,10 @@ def setup_logging():
     """
     Configures a logger to pali.log
     """
+    global logging_already_set
     if logging_already_set:
        return
+    logging_already_set = True
     formatter = logging.Formatter(
         "%(asctime)s %(levelname)s %(name)s[%(lineno)d]:"
         "%(funcName)s %(message)s")
