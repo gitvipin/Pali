@@ -19,7 +19,7 @@ def setup_logging():
        return
     logging_already_set = True
     formatter = logging.Formatter(
-        "%(asctime)s %(levelname)s %(name)s[%(lineno)d]:"
+        "%(asctime)s %(threadName)s %(levelname)s %(name)s[%(lineno)d]:"
         "%(funcName)s %(message)s")
     # formatter.converter = time.gmtime  # log UTC timestamps
     handler = logging.FileHandler(constants.LOG_FILE)

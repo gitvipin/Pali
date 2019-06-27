@@ -11,6 +11,8 @@ This shows a simple example of preparing multiple recipe(s) for a party.
 '''
 
 
+import time
+
 from src import assembly
 from src import logger
 from src import task
@@ -23,13 +25,14 @@ class DemoStage(assembly.Stage):
 
     def run(self, data):
         log.info("Performing : %s ", self.name)
+        time.sleep(2)
 
 class MyAssembly(assembly.Assembly):
 
     def _run(self):
         with worker.ThreadPool(2) as tpool:
-            for p in self.pipelines:
-                tpool.append_task(p)
+            for pipeline in self.pipelines:
+                tpool.append_task(pipeline)
 
 def demo():
 
@@ -38,7 +41,7 @@ def demo():
     p_tea.stages.append(DemoStage("Grate Ginger"))
     p_tea.stages.append(DemoStage("Add Tea Leaves"))
     p_tea.stages.append(DemoStage("Add milk"))
-    p_tea.stages.append(DemoStage("Boil for 10 minutes."))
+    p_tea.stages.append(DemoStage("Boil Tea for 10 minutes."))
 
 
     p_rice = assembly.Pipeline("Rice")
@@ -46,7 +49,7 @@ def demo():
     p_rice.stages.append(DemoStage("Wash Rice"))
     p_rice.stages.append(DemoStage("Boil Water"))
     p_rice.stages.append(DemoStage("Add Rice"))
-    p_tea.stages.append(DemoStage("Boil for 10 minutes."))
+    p_rice.stages.append(DemoStage("Boil Rice for 10 minutes."))
 
     p_pizza  = assembly.Pipeline("Pizza")
     p_pizza.stages.append(DemoStage("Ferment dough for 4 hours."))
@@ -67,8 +70,6 @@ def demo():
 
     party = MyAssembly()
     party.pipelines.extend([p_tea, p_rice, p_pizza])
-
-    import pdb ; pdb.set_trace()
     party.run()
 
 if __name__ == '__main__':
