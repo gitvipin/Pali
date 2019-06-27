@@ -33,7 +33,7 @@ import src.task as task
 import src.worker as worker
 
 
-class Stage(task.Task):
+class Stage(object):
 
     """
     Stages are like the atomic step of pipelines execution.
@@ -53,6 +53,9 @@ class Stage(task.Task):
 
         self.log = logger.getLogger(__name__)
 
+    def run(self, data=None):
+        raise NotImplementedError("Implement run method")
+
 
 class Pipeline(task.Task):
 
@@ -65,7 +68,7 @@ class Pipeline(task.Task):
         self.log = logger.getLogger(__name__)
 
     def _run(self):
-        for stage in self._stages:
+        for stage in self.stages:
             try:
                 stage.run(self.data)
             except Exception as err:
