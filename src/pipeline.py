@@ -33,6 +33,9 @@ import src.task as task
 import src.worker as worker
 
 
+log = logger.getLogger(__name__)
+
+
 class Stage(object):
 
     """
@@ -51,7 +54,6 @@ class Stage(object):
         self._state = self.WAITING
         self._next = None
 
-        self.log = logger.getLogger(__name__)
 
     def run(self, data=None):
         raise NotImplementedError("Implement run method")
@@ -59,42 +61,52 @@ class Stage(object):
 
 class Pipeline(task.Task):
 
-    def __init__(self, stages, data=None):
+    def __init__(self, name, stages=None, data=None):
         """
         A pipeline is a collection of pipeline stages.
         """
-        self.stages = []
+        super(Pipeline, self).__init__()
+
+        self.name = name
+        self.stages = stages if stages else []
         self.data = data if data else {}
-        self.log = logger.getLogger(__name__)
 
     def _run(self):
+        log.info("Starting pipeline : %s", self.name)
         for stage in self.stages:
             try:
                 stage.run(self.data)
             except Exception as err:
                 # TODO : Do better Error handling
-                self.log.error("Pipeline Error : %r", err)
+                log.error("Pipeline Error : %r", err)
 
                 # if a pipeline stage fais we need to stop the execution.
                 break
+        log.info("Finished pipeline : %s", self.name)
 
 
 class Assembly(task.Task):
 
     MAX_CONCURRENT_PIPELINES = 5
 
-    def __init__(self, pipelines=None, max_concurrent_pipelines=None):
+    def __init__(self, name, pipelines=None, max_concurrent_pipelines=None):
         '''
         Assembly is a collection of pipelines.
         '''
+
+        super(Assembly, self).__init__()
+        self.name = name
         self.pipelines = pipelines if pipelines else []
         self.max_threads = max_concurrent_pipelines if max_concurrent_pipelines is not None else self.MAX_CONCURRENT_PIPELINES
 
     def _run(self):
 
+        log.info("Starting Assembly : %s", self.name)
         tpool = worker.ThreadPool(self.max_threads)
+        tpool.start()
 
         for pipeline in self.pipelines:
             tpool.append_task(pipeline)
 
         tpool.close()
+        log.info("Finished Assembly : %s", self.name)

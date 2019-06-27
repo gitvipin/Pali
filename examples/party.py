@@ -13,7 +13,7 @@ This shows a simple example of preparing multiple recipe(s) for a party.
 
 import time
 
-from src import assembly
+from src import pipeline 
 from src import logger
 from src import task
 from src import worker
@@ -21,13 +21,13 @@ from src import worker
 
 log = logger.getLogger(__name__)
 
-class DemoStage(assembly.Stage):
+class DemoStage(pipeline.Stage):
 
     def run(self, data):
         log.info("Performing : %s ", self.name)
         time.sleep(2)
 
-class MyAssembly(assembly.Assembly):
+class MyAssembly(pipeline.Assembly):
 
     def _run(self):
         with worker.ThreadPool(2) as tpool:
@@ -36,7 +36,7 @@ class MyAssembly(assembly.Assembly):
 
 def demo():
 
-    p_tea = assembly.Pipeline("Tea")
+    p_tea = pipeline.Pipeline("Tea")
     p_tea.stages.append(DemoStage("Boil Water"))
     p_tea.stages.append(DemoStage("Grate Ginger"))
     p_tea.stages.append(DemoStage("Add Tea Leaves"))
@@ -44,14 +44,14 @@ def demo():
     p_tea.stages.append(DemoStage("Boil Tea for 10 minutes."))
 
 
-    p_rice = assembly.Pipeline("Rice")
+    p_rice = pipeline.Pipeline("Rice")
     p_rice.stages.append(DemoStage("Soak Rice for 10 minutes."))
     p_rice.stages.append(DemoStage("Wash Rice"))
     p_rice.stages.append(DemoStage("Boil Water"))
     p_rice.stages.append(DemoStage("Add Rice"))
     p_rice.stages.append(DemoStage("Boil Rice for 10 minutes."))
 
-    p_pizza  = assembly.Pipeline("Pizza")
+    p_pizza  = pipeline.Pipeline("Pizza")
     p_pizza.stages.append(DemoStage("Ferment dough for 4 hours."))
     p_pizza.stages.append(DemoStage("Roll dough."))
     p_pizza.stages.append(DemoStage("Add sauce"))
@@ -68,7 +68,7 @@ def demo():
 
     # return
 
-    party = MyAssembly()
+    party = MyAssembly(name='party')
     party.pipelines.extend([p_tea, p_rice, p_pizza])
     party.run()
 
