@@ -29,7 +29,7 @@ class WorkerThread(threading.Thread):
         self.daemon = True
 
     def run(self):
-        while True and not self._stop_event.is_set():
+        while not self._stop_event.is_set():
             try:
                 if self._verbose:
                     t = threading.current_thread()
@@ -49,6 +49,7 @@ class WorkerThread(threading.Thread):
                 self._input_queue.task_done()
 
             except Exception as err:
+                log.exception(err)
                 pass
 
         log.info("Finished execution.")
@@ -63,6 +64,17 @@ class WorkerThread(threading.Thread):
 
     def stop(self):
         self._stop_event.set()
+
+    disable = stop
+
+    def enable(self):
+        self._stop_event.clear()
+
+    def is_disabled(self):
+        """
+        Returns True if worker thread is disabled.
+        """
+        return self._stop_event.isSet()
 
     def close(self):
         # Stop the thread.
@@ -104,6 +116,12 @@ class WorkerPool(object):
 
     def finished(self):
         return self._finished_tasks.qsize()
+
+    def get_workers(self):
+        '''
+        Returns the list of worker threads.
+        '''
+        return self._handlers
 
 
 class ThreadPool(WorkerPool):
