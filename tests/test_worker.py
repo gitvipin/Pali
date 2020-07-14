@@ -2,10 +2,10 @@
 
 import threading
 
-from src.common import queue
-import src.logger as logger
-import src.task as task
-import src.worker as worker
+from pali.common import queue
+import pali.logger as logger
+import pali.task as task
+import pali.worker as worker
 
 
 log = logger.getLogger(__name__)

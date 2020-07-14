@@ -3,7 +3,7 @@
 A simple test for the task.
 '''
 
-import src.task as task
+import pali.task as task
 import unittest
 
 

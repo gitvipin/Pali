@@ -6,7 +6,7 @@ Module for setting up logging for Pali project.
 import logging
 import time
 
-import src.constants as constants
+import pali.constants as constants
 
 logging_already_set = False
 
