@@ -6,9 +6,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 version = {}
-with open("__init__.py") as fp:
+with open("pali/__init__.py") as fp:
     exec(fp.read(), version)
 
+
+>>>>>>> pali: Restructuring changes
 setuptools.setup(
     name="pali",
     version=version['__version__'],
