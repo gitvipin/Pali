@@ -9,8 +9,6 @@ version = {}
 with open("pali/__init__.py") as fp:
     exec(fp.read(), version)
 
-
->>>>>>> pali: Restructuring changes
 setuptools.setup(
     name="pali",
     version=version['__version__'],
