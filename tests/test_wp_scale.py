@@ -13,8 +13,8 @@ Various scales tested are:
 
 import unittest
 
-import src.task as task
-import src.worker as worker
+import pali.task as task
+import pali.worker as worker
 
 class MyTask(task.Task):
 

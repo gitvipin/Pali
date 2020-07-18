@@ -10,9 +10,9 @@ import threading
 import time
 import unittest
 
-import src.task as task
-import src.worker as worker
-import src.logger as logger
+import pali.task as task
+import pali.worker as worker
+import pali.logger as logger
 
 log = logger.getLogger(__name__)
 
