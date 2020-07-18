@@ -92,7 +92,7 @@ class WorkerPool(object):
         assigns to one of the worker threads.
         '''
         maxsize = max_queue_size if max_queue_size else WorkerPool.MAXSIZE
-        self._max_parallel_tasks = max_parallel if not None else self.MAX_PARALLEL_TASK
+        self._max_parallel_tasks = max_parallel if max_parallel else self.MAX_PARALLEL_TASK
 
         self._pending_tasks = queue.Queue(maxsize=maxsize)
         self._finished_tasks = queue.Queue(maxsize=maxsize)
