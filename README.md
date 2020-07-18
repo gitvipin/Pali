@@ -1,3 +1,5 @@
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+
 # Pali
 
 Pali is a simple Thread Pool library for Python. It is compatible with Python3 as well as Python2.
