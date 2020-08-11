@@ -1,4 +1,4 @@
-[![Github All Releases](https://img.shields.io/pypi/dm/pali)]()
+[![Downloads](https://pepy.tech/badge/pali)](https://pepy.tech/project/pali)
 
 # Pali
 
