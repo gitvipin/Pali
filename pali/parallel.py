@@ -10,7 +10,7 @@ if PYTHON_2:
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from pali.config import get_param
-from pali.logging import getLogger
+from pali.logger import getLogger
 
 log = getLogger(__name__)
 
