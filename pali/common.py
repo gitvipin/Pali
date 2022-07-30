@@ -4,7 +4,6 @@ Some general purpose utilities.
 '''
 
 from platform import python_version
-import sys
 
 PYTHON_VER = python_version()
 
