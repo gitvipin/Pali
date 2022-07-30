@@ -1,33 +1,81 @@
 #!/usr/bin/env python
 """
-Module for setting up logging for Pali project.
+Logger module provides common utilities useful for
+setting up logging for Python projects.
 """
 
 import logging
-import time
+import os
 
 import pali.constants as constants
 
-logging_already_set = False
+LOG_DIR = './'
+LOG_FILE = 'pali.log'
+LOG_FORMATTER = logging.Formatter(
+        '%(asctime)s::%(levelname)s::%(threadName)s::'
+        '%(module)s[%(lineno)04s]::%(message)s')
+LOG_LEVEL = logging.INFO
+LOG_LEVEL_NAMES = ['CRITICAL', 'DEBUG', 'ERROR', 'FATAL',
+                   'WARN', 'WARNING', 'INFO']
+LOG_SETUP_DONE = False
 
-def setup_logging():
+
+def create_log_dir(log_dir):
     """
-    Configures a logger to pali.log
+    Creates log directory. If not successful raises
+    exception after printing message on stdout.
     """
-    global logging_already_set
-    if logging_already_set:
-       return
-    logging_already_set = True
-    formatter = logging.Formatter(
-        "%(asctime)s %(threadName)s %(levelname)s %(name)s[%(lineno)d]:"
-        "%(funcName)s %(message)s")
-    # formatter.converter = time.gmtime  # log UTC timestamps
-    handler = logging.FileHandler(constants.LOG_FILE)
-    handler.setFormatter(formatter)
-    root = logging.getLogger()
-    root.addHandler(handler)
-    root.setLevel(logging.DEBUG)
+    try:
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+    except Exception as err:
+        print("Failed to create log directory, %s :  %s" %
+              (log_dir, str(err)))
+        raise err
+
+
+def set_module_log_level(module_name, log_level):
+    """
+    Sets the log level for a module. It is particulary
+    helpful when third party module's debugging level
+    needs to be changed.
+    """
+    assert log_level in LOG_LEVEL_NAMES, (
+        "Invalid log level, %s, requestd for module %s" %
+        (log_level, module_name))
+
+    mod_logger = logging.getLogger(module_name)
+    mod_logger.setLevel(getattr(logging, log_level))
+
+
+def setup_logging(log_dir=None, log_file=None, log_level=logging.INFO):
+    """
+    Sets up logging for the project. Repeated calls are ignored after
+    the first call.
+    """
+    global LOG_SETUP_DONE
+    if LOG_SETUP_DONE:
+        return  # makes repeated calls idempotent
+    LOG_SETUP_DONE = True
+    log_dir = log_dir or LOG_DIR
+    log_file = log_file or LOG_FILE
+    log_level = log_level or LOG_LEVEL
+
+    create_log_dir(log_dir)  # Create log directory
+
+    log_file_name = os.path.join(log_dir, log_file)
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(log_level)
+
+    file_handler = logging.FileHandler(log_file_name, mode='w')
+    file_handler.setFormatter(LOG_FORMATTER)
+    root_logger.addHandler(file_handler)
+
 
 def getLogger(module_name):
-    setup_logging()
+    """
+    Wrapper around logging.getLogger. It helps in making calls route
+    through this method so that any common changes can be done here.
+    """
     return logging.getLogger(module_name)
