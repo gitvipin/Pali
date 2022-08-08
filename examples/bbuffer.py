@@ -5,8 +5,10 @@ ThreadTaskLoop
 import time
 
 from pali.bbuffer import ProducerConsumer
-from pali.logger import setup_logging
+from pali.logger import getLogger, setup_logging
 from pali.thread import ThreadTaskLoop
+
+log = getLogger(__name__)
 
 class TimeStampRecorder(ProducerConsumer):
     """
@@ -27,8 +29,8 @@ class TimeStampRecorder(ProducerConsumer):
         """ Print timestamp every 1 second from buffer"""
         time.sleep(2)
         data = self.pop_from_buffer()
-        print (data)
-        print ("Buffer size : ", self.get_buffer_size())
+        log.info("Data : %s - Buffer size : %s", data,
+                 self.get_buffer_size())
 
 
 class Producer(ThreadTaskLoop):
@@ -36,7 +38,13 @@ class Producer(ThreadTaskLoop):
     A simple ThreadTaskLoop that will run '_task' method
     in a loop.
     """
-    array = []
+    def __init__(self):
+        super(Producer, self).__init__()
+        self.array = []
+
+    def produce_count(self):
+        """ Returns number of elements produced so far."""
+        return len(self.array)
 
     def _task(self):
         time.sleep(1)
@@ -52,7 +60,7 @@ if __name__ == '__main__':
     pc = Producer()
     pc.start()
 
-    # Create a timestamp recorder and
+    # Create a timestamp recorder
     tc = TimeStampRecorder()
     tc.start()
     time.sleep(10)
