@@ -21,7 +21,6 @@ class TestWorkerPoolPause(unittest.TestCase):
         
         # Test : Start thread and wait for 3 seconds. 
         # Records should be peoduced in the buffer.
-        import pdb ; pdb.set_trace()
         pc.start()
         time.sleep(3)
         pcount = pc.produce_count()
