@@ -16,7 +16,9 @@ done for two reasons.
 '''
 
 import collections
+from pali.logger import getLogger
 
+log = getLogger(__name__)
 PARAMS = collections.defaultdict()
 
 class DistType:
@@ -59,6 +61,7 @@ def add_param(param, val, val_type=str, ab_values = None, ab_enabled = False, ab
     Adds Constant in the global constants dictionary.
     """
     PARAMS[param] = Parameter(param, val, val_type, ab_values, ab_enabled, ab_distribution)
+    log.debug("Added parameter : %s", param)
 
 
 def get_param(param):   # DEPRECATED, use config module instead.
