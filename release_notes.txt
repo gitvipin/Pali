@@ -1,0 +1,11 @@
+
+
+Release 0.0.6
+--------
+- Adds initial version of following modules 
+    - config
+    - TaskLoop
+    - logging
+    - A/B testing
+
+
