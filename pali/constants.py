@@ -11,4 +11,9 @@ CONFIG_COMMON_SECTION = 'COMMON'
 CONFIG_USE_PARAMS = True
 
 # Logger constants
-LOG_FILE='pali.log'
+LOG_DIR = './'
+LOG_FILE = 'pali.log'
+LOG_FORMAT = (
+    '%(asctime)s::%(levelname)s::%(threadName)s::'
+    '%(module)s[%(lineno)04s]::%(message)s')
+LOG_LEVEL = 'INFO'

@@ -9,12 +9,6 @@ import os
 
 import pali.constants as constants
 
-LOG_DIR = './'
-LOG_FILE = 'pali.log'
-LOG_FORMATTER = logging.Formatter(
-        '%(asctime)s::%(levelname)s::%(threadName)s::'
-        '%(module)s[%(lineno)04s]::%(message)s')
-LOG_LEVEL = logging.INFO
 LOG_LEVEL_NAMES = ['CRITICAL', 'DEBUG', 'ERROR', 'FATAL',
                    'WARN', 'WARNING', 'INFO']
 LOG_SETUP_DONE = False
@@ -56,10 +50,10 @@ def setup_logging(log_dir=None, log_file=None, log_level=logging.INFO):
     global LOG_SETUP_DONE
     if LOG_SETUP_DONE:
         return  # makes repeated calls idempotent
-    LOG_SETUP_DONE = True
-    log_dir = log_dir or LOG_DIR
-    log_file = log_file or LOG_FILE
-    log_level = log_level or LOG_LEVEL
+
+    log_dir = log_dir or constants.LOG_DIR
+    log_file = log_file or constants.LOG_FILE
+    log_level = log_level or getattr(logging, constants.LOG_LEVEL)
 
     create_log_dir(log_dir)  # Create log directory
 
@@ -69,8 +63,9 @@ def setup_logging(log_dir=None, log_file=None, log_level=logging.INFO):
     root_logger.setLevel(log_level)
 
     file_handler = logging.FileHandler(log_file_name, mode='w')
-    file_handler.setFormatter(LOG_FORMATTER)
+    file_handler.setFormatter(logging.Formatter(constants.LOG_FORMAT))
     root_logger.addHandler(file_handler)
+    LOG_SETUP_DONE = True
 
 
 def getLogger(module_name):
