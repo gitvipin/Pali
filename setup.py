@@ -14,7 +14,7 @@ setuptools.setup(
     version=version['__version__'],
     author="Vipin Sharma",
     author_email="sh.vipin@gmail.com",
-    description="A simple ThreadPool library",
+    description="Lightweight utilities for bootstrapping Python applications with task execution, workflows, configuration, and logging.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gitvipin/pali",

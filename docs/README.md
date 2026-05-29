@@ -25,7 +25,7 @@ Welcome to the Pali documentation. This guide will help you get started with Pal
 
 ## What is Pali?
 
-Pali is a lightweight, easy-to-use thread pool library for Python that supports both Python 2.7+ and Python 3.4+. 
+Pali is a lightweight initiator for Python applications that supports both Python 2.7+ and Python 3.4+.
 
 Pali excels at:
 - Creating flexible data pipelines
