@@ -1,11 +1,10 @@
-
-
-Release 0.0.6
+Release 1.0.0
 --------
-- Adds initial version of following modules 
+- First stable 1.0 release with core task execution and workflow utilities
     - config
     - TaskLoop
     - logging
     - A/B testing
+- Documentation and packaging updated for stable release
 
 

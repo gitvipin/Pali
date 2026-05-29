@@ -27,6 +27,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-05-28
+
+### Added
+- First stable 1.0.0 release with core task execution, workflow, configuration, and logging support
+- ThreadPool implementation with configurable worker threads
+- Task and pipeline execution model with lifecycle management
+- INI-based configuration management with typed parameters
+- A/B testing support for parameter distribution
+- Integrated logging setup and thread-aware log formatting
+
+### Changed
+- Updated packaging and docs for stable 1.0.0 release
+
+### Fixed
+- No critical fixes beyond the stable release preparation
+
+### Deprecated
+- [No deprecations in this release]
+
+### Removed
+- [No removals in this release]
+
+### Security
+- [No security issues reported for this release]
+
+---
+
 ## [0.0.6] - Initial Release
 
 ### Added
@@ -102,7 +129,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-### 0.0.6 (Current)
+### 1.0.0 (Current)
+- First stable release with core ThreadPool, Task, Pipeline, Configuration, and A/B Testing capabilities
+
+### 0.0.6
 - Initial release with core ThreadPool, Task, Pipeline, Configuration, and A/B Testing capabilities
 
 ---

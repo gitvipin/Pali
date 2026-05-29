@@ -43,7 +43,7 @@ To verify that Pali was installed correctly, open a Python shell and import it:
 ```python
 >>> import pali
 >>> print(pali.__version__)
-0.0.6
+1.0.0
 ```
 
 If you see the version number without errors, Pali is installed correctly!
