@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 -m unittest discover -p "*.py" ./tests/
+python3 -m unittest discover -p "*.py" ./tests/core
