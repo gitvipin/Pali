@@ -2,11 +2,27 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-2.7%2B%2C%203.4%2B-blue.svg)](#requirements)
 
-# Pali - Python Applications Lightweight Initiator
+# Pali
 
-Pali is a lightweight initiator for Python applications. It provides essential utilities for task execution, workflow orchestration, configuration, logging, and runtime support.
+**Pali (Python Applications Lightweight Initiator)** is a dependency-free application foundation library for Python.
 
-Pali is compatible with Python 2.7+ and Python 3.4+, and is designed to help you bootstrap small to medium Python applications with minimal dependencies.
+It provides a collection of reusable infrastructure components and software patterns that commonly appear across Python applications, whether they are simple automation scripts, cron jobs, backend services, integration solutions, or production microservices.
+
+Instead of repeatedly implementing the same foundational capabilities in every project, developers can leverage Pali's lightweight building blocks for:
+
+* Configuration management
+* Logging standardization
+* Persistence and state management
+* Daemon and service lifecycle management
+* Concurrent execution and thread pools
+* Assembly and pipeline processing
+* Sliding window protocols
+* A/B testing and experimentation
+
+Pali is implemented entirely in native Python and intentionally avoids third-party dependencies. The result is a lightweight, portable, and easy-to-understand library that can be adopted incrementally without introducing a bulky framework with runtime and dependencies footprint.
+
+Originally developed as a ThreadPool implementation for Python 2.7, Pali has evolved into a broader collection of production-tested utilities that address recurring challenges in real-world Python applications.
+
 
 ## Quick Links
 
@@ -15,116 +31,6 @@ Pali is compatible with Python 2.7+ and Python 3.4+, and is designed to help you
 - **[Quick Start](docs/getting-started/quick-start.md)** - Get running in 5 minutes
 - **[GitHub](https://github.com/gitvipin/pali)** - Source code and issues
 
-## What is Pali?
-
-Pali provides a compact suite of application utilities for Python, including task execution, workflow pipelines, configuration management, logging, and parameter-driven runtime behavior.
-
-It is built to help developers compose reusable application building blocks without imposing a heavy framework.
-
-### 1. **Task Execution** - Parallel and Asynchronous Workloads
-
-One of Pali's core execution models is ThreadPool, which lets you process multiple independent tasks in parallel using a pool of worker threads:
-
-```python
-from pali import worker, task
-
-class MyTask(task.Task):
-    def __init__(self, number):
-        super(MyTask, self).__init__()
-        self.number = number
-        self.result = None
-    
-    def _run(self):
-        self.result = self.number ** 2
-
-# Create 10 tasks
-tasks = [MyTask(i) for i in range(10)]
-
-# Process with 4 threads
-with worker.ThreadPool(4) as tpool:
-    for t in tasks:
-        tpool.append_task(t)
-
-# Get results
-print([t.result for t in tasks])  # [0, 1, 4, 9, 16, ...]
-```
-
-### 2. **Pipelines** - Workflow Coordination and Sequential Processing
-
-Pipelines let you build ordered workflows with stages that execute sequentially, so you can model real application processes and multi-step business logic:
-
-```python
-from pali.pipeline import Pipeline, Stage
-
-class ValidationStage(Stage):
-    def run(self, data):
-        if not data:
-            raise ValueError("Invalid data")
-
-class ProcessingStage(Stage):
-    def run(self, data):
-        data['result'] = sum(data['values'])
-
-class OutputStage(Stage):
-    def run(self, data):
-        print(f"Result: {data['result']}")
-
-pipeline = Pipeline(
-    "MyPipeline",
-    stages=[ValidationStage(), ProcessingStage(), OutputStage()],
-    data={'values': [1, 2, 3, 4, 5]}
-)
-
-pipeline._run()  # Output: Result: 15
-```
-
-## Application Utility Use Cases
-
-Pali excels at providing lightweight utility support for application-style workflows and infrastructure:
-
-| Use Case | Solution | Details |
-|----------|----------|---------|
-| **Application Bootstrapping** | Task Execution + Configuration | Core utilities for starting app workflows, managing config, and running tasks |
-| **Data Workflows** | Pipeline + Assembly | Multi-stage ETL workflows, processing pipelines, and workflow coordination |
-| **Concurrent Request Handling** | ThreadPool | Handle parallel request or job processing in broker-style applications |
-| **Stress and Load Simulation** | ThreadPool | Simulate load, stress testing, and background work |
-| **Configuration Management** | ConfigManager | INI-based config loading, default values, and environment variants |
-| **Logging and Diagnostics** | Logger | Thread-aware logging, file logging, and module-level control |
-| **Feature Experimentation** | Parameters | Parameter-driven A/B testing and runtime variant switching |
-
-## Core Features
-
-### 🚀 **ThreadPool** - Simple Parallel Processing for Application Workloads
-- Easy-to-use context manager API
-- Configurable thread count
-- Thread-safe task queueing
-- Automatic task distribution
-- Graceful shutdown handling
-
-### 📊 **Pipelines** - Sequential Workflows
-- Ordered stage execution
-- Shared data dictionary between stages
-- Assembly pattern for parallel pipelines
-- Error handling and logging
-- Reusable pipeline definitions
-
-### ⚙️ **Configuration Management**
-- INI-based configuration files
-- Type-safe parameter handling
-- Section-based organization
-- Environment-specific configs
-
-### 📝 **Logging**
-- Integrated logging setup
-- Thread-aware log formatting
-- Per-module log level control
-- File-based logging with auto-directory creation
-
-### 🔬 **A/B Testing**
-- Parameter-based A/B testing
-- Multiple value distributions
-- Enable/disable per parameter
-- Automatic cycling through variants
 
 ## Installation
 
