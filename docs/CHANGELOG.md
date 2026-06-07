@@ -27,6 +27,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-06-06
+
+### Added
+- Added tests for documentation examples covering Task, Pipeline, and Logger usage.
+- Refined README content and feature emphasis for clearer onboarding.
+
+### Changed
+- Improved documentation example quality and clarity across guides.
+
+### Fixed
+- No functional fixes beyond documentation/test coverage improvements.
+
+### Deprecated
+- [No deprecations in this release]
+
+### Removed
+- [No removals in this release]
+
+### Security
+- [No security issues reported for this release]
+
+---
+
 ## [1.0.0] - 2026-05-28
 
 ### Added

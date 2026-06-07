@@ -1,10 +1,7 @@
-Release 1.0.0
+Release 1.0.1 (Draft)
 --------
-- First stable 1.0 release with core task execution and workflow utilities
-    - config
-    - TaskLoop
-    - logging
-    - A/B testing
-- Documentation and packaging updated for stable release
+- Added documentation example tests for Task, Pipeline, and Logger modules
+- Refined README clarity and onboarding guidance
+- Improved documentation examples and release readiness
 
 
