@@ -14,7 +14,7 @@ setuptools.setup(
     version=version['__version__'],
     author="Vipin Sharma",
     author_email="sh.vipin@gmail.com",
-    description="Lightweight utilities for bootstrapping Python applications with task execution, workflows, configuration, and logging.",
+    description="Python Applications Lightweight Initiator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gitvipin/pali",
