@@ -28,9 +28,9 @@ IP addresses of endpoints to be configured.
 
 import abc
 
-import pali.logger as logger
-import pali.task as task
-import pali.worker as worker
+import pali.utils.logger as logger
+import pali.task.task as task
+import pali.threading.worker as worker
 
 
 log = logger.getLogger(__name__)

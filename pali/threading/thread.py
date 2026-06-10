@@ -7,7 +7,7 @@ This module :
 import threading
 
 from pali.common import PYTHON_2, PYTHON_3
-import pali.logger as logger
+import pali.utils.logger as logger
 
 log = logger.getLogger(__name__)
 

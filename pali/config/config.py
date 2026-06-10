@@ -10,8 +10,8 @@ import os
 import threading
 
 from pali import constants as constants
-from pali.logger import getLogger
-from pali import params as params
+from pali.utils.logger import getLogger
+from pali.config import params
 
 
 CFG_MGR = None

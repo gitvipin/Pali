@@ -16,7 +16,7 @@ done for two reasons.
 '''
 
 import collections
-from pali.logger import getLogger
+from pali.utils.logger import getLogger
 
 log = getLogger(__name__)
 PARAMS = collections.defaultdict()
