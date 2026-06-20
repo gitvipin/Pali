@@ -6,7 +6,7 @@ This module provides core implementation of ThreadPool.
 import threading as threading
 
 from pali.common import queue
-import pali.logger as logger
+import pali.utils.logger as logger
 
 log = logger.getLogger(__name__)
 

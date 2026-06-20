@@ -4,8 +4,8 @@ ThreadTaskLoop
 '''
 import time
 
-from pali.bbuffer import ProducerConsumer
-from pali.logger import getLogger, setup_logging
+from pali.utils.bbuffer import ProducerConsumer
+from pali.utils.logger import getLogger, setup_logging
 from pali.thread import ThreadTaskLoop
 
 log = getLogger(__name__)

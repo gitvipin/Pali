@@ -11,10 +11,10 @@ import signal
 import subprocess
 import time
 
-from pali import logger
+from pali.utils.logger import getLogger
 from pali import common
 
-log = logger.getLogger(__name__)
+log = getLogger(__name__)
 
 
 class Console(object):

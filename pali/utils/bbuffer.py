@@ -2,11 +2,10 @@
 This module implements Bounded Buffer (a.k.a. Producer Consumer).
 '''
 from pali.common import queue
-from pali.thread import ThreadTaskLoop
+from pali.threading.thread import ThreadTaskLoop
+from pali.utils.logger import getLogger
 
-from pali import logger
-
-log = logger.getLogger(__name__)
+log = getLogger(__name__)
 
 class ProducerConsumer(object):
     BUFFER_SIZE = 1000
