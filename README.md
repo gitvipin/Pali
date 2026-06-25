@@ -4,63 +4,145 @@
 
 # Pali
 
-**Pali (Python Applications Lightweight Initiator)** is a dependency-free application foundation library for Python.
+**Pali** (Python Applications Lightweight Initiator) is a lightweight foundation library for Python Applications. Built entirely in native Python with zero dependencies.
 
-It provides a collection of reusable infrastructure components and software patterns that commonly appear across Python applications, whether they are simple automation scripts, cron jobs, backend services, integration solutions, or production microservices.
+Python applications repeatedly solve the same infrastructure problems—configuration, logging, concurrency, persistence, data pipelines, and service lifecycle management. Pali provides a lightweight, dependency-free collection of reusable building blocks for these common application patterns, allowing developers to focus on application logic instead of reinventing infrastructure. Adopt only the components you need, with no hidden framework overhead.
 
-Instead of repeatedly implementing the same foundational capabilities in every project, developers can leverage Pali's lightweight building blocks for:
+Start with [Quick Start](docs/getting-started/quick-start.md) to see how fast it is to build with Pali.
 
-* Configuration management
-* Logging standardization
-* Persistence and state management
-* Daemon and service lifecycle management
-* Concurrent execution and thread pools
-* Assembly and pipeline processing
-* Sliding window protocols
-* A/B testing and experimentation
+**Why Pali?**
+- ✅ **Lightweight** — Minimal footprint, no external dependencies.
+- ✅ **Native Python** — Pure Python implementation, works well in constrained and dependency-sensitive environments (e.g. ESX).
+- ✅ **[12-factor](https://12factor.net/) friendly** — Designed for config, concurrency, logging, and disposability.
+- ✅ **Production-tested** — Real-world utilities refined over years.
+- ✅ **Modular** — Import only what you use.
 
-Pali is implemented entirely in native Python and intentionally avoids third-party dependencies. The result is a lightweight, portable, and easy-to-understand library that can be adopted incrementally without introducing a bulky framework with runtime and dependencies footprint.
+### When should I consider Pali ?
 
-Originally developed as a ThreadPool implementation for Python 2.7, Pali has evolved into a broader collection of production-tested utilities that address recurring challenges in real-world Python applications.
+**Pali** is a good fit when you are building:
+
+- Infrastructure automation
+- DevOps tooling
+- Background workers
+- Long-running daemons
+- Backend services
+- Microservices
+- Batch processing applications
+- Data pipelines
+- Integration services
+- CLI utilities
+
+### Micro-Examples
+
+**Structured logging** — Standardized application logging:
+```python
+from pali import setup_logging, getLogger
+
+# Setup logging once when application starts. 
+setup_logging(log_dir="./", log_file="my_app.log")
+
+# Now every module can get logger and add logs.
+log = getLogger(__name__)
+log.info('Application started')
+```
+
+**Configuration management** — Load and validate settings:
+```ini
+# Define a .ini format based Config file for application.
+# config/pali.cfg
+[DEFAULT]
+debug = true
+
+[DATABASE]
+host = localhost
+port = 5432
+```
+
+```python
+from pali import ConfigManager
+
+# Initialize ConfigManager with app config file.
+cfg = ConfigManager('config/pali.cfg')
+
+# Read a value from the DATABASE section
+db_host = cfg.get('DATABASE', 'host')
+
+# Read a default value from the DEFAULT section
+debug = cfg.get('DEFAULT', 'debug')
+```
+
+**Data pipelines** — Sequential processing stages:
+```python
+from pali import Pipeline, Stage
+
+class HeatWaterStage(Stage):
+    def __init__(self):
+        super(HeatWaterStage, self).__init__('Heat Water')
+
+    def run(self, data):
+        data['temperature'] = 100
+        data['state'] = 'water heated'
+
+class AddTeaStage(Stage):
+    def __init__(self):
+        super(AddTeaStage, self).__init__('Add Tea')
+
+    def run(self, data):
+        data['tea'] = 'green'
+        data['state'] = 'tea added'
+
+class SteepTeaStage(Stage):
+    def __init__(self):
+        super(SteepTeaStage, self).__init__('Steep Tea')
+
+    def run(self, data):
+        data['steeped'] = True
+        data['state'] = 'tea steeped'
+
+class ServeTeaStage(Stage):
+    def __init__(self):
+        super(ServeTeaStage, self).__init__('Serve Tea')
+
+    def run(self, data):
+        data['served'] = True
+        data['result'] = 'cup of tea ready'
+
+pipeline = Pipeline(
+    name='TeaPipeline',
+    stages=[HeatWaterStage(), AddTeaStage(), SteepTeaStage(), ServeTeaStage()],
+    data={'cup': 'empty'}
+)
+pipeline._run()
+print(pipeline.data)
+```
+
+**Parallel task execution** — Process items concurrently:
+```python
+from pali import Task, ThreadPool
+
+class ProcessItem(Task):
+    def _run(self):
+        self.result = expensive_operation(self.data)
+
+items = [1, 2, 3]
+tasks = [ProcessItem(item) for item in items]
+with ThreadPool(4) as pool:
+    for t in tasks:
+        pool.append_task(t)
+results = [t.result for t in tasks]
+```
 
 
 ## Quick Links
 
-- **[Documentation](docs/README.md)** - Full guides and API reference
-- **[Installation](docs/getting-started/installation.md)** - How to install Pali
-- **[Quick Start](docs/getting-started/quick-start.md)** - Get running in 5 minutes
+- **[Getting Started](docs/getting-started/)** - Installation and quick start
+- **[Full Documentation](docs/README.md)** - All guides and API docs
 - **[GitHub](https://github.com/gitvipin/pali)** - Source code and issues
 
 ## Requirements
 
 - Python 2.7+ or Python 3.4+
 - No external dependencies
-
-## Documentation
-
-### Getting Started
-- [Installation Guide](docs/getting-started/installation.md)
-- [Quick Start (5 minutes)](docs/getting-started/quick-start.md)
-
-### Core Concepts
-- [ThreadPool Guide](docs/guide/thread-pool.md) - Parallel task execution
-- [Tasks Guide](docs/guide/tasks.md) - Creating custom tasks
-- [Pipelines Guide](docs/guide/pipeline.md) - Sequential workflows
-
-### Advanced Features
-- [Configuration Guide](docs/guide/configuration.md) - Config file management
-- [Logging Guide](docs/guide/logging.md) - Logging setup and usage
-- [A/B Testing Guide](docs/guide/ab-testing.md) - A/B testing with parameters
-
-### Full Documentation
-Visit the [Documentation Index](docs/README.md) for complete API reference.
-
-## Additional Guides
-
-- [Application Examples](docs/guide/examples.md) - Real-world usage patterns and code samples
-- [Architecture](docs/guide/architecture.md) - System design and core concepts
-- [Best Practices](docs/guide/best-practices.md) - Recommended patterns and optimization tips
-- [Contributing Guide](docs/getting-started/contributing.md) - How to contribute to Pali
 
 ## Contributing
 See the [Contributing Guide](docs/getting-started/contributing.md) for details.
@@ -70,7 +152,6 @@ See the [Contributing Guide](docs/getting-started/contributing.md) for details.
 - 📖 [Documentation](docs/README.md)
 - 🐛 [Report Issues](https://github.com/gitvipin/pali/issues)
 - 💬 [Discussions](https://github.com/gitvipin/pali/discussions)
-- 📧 [Contact](mailto:sh.vipin@gmail.com)
 
 ## License
 

@@ -1,6 +1,6 @@
 # Pali Documentation
 
-Welcome to the Pali documentation. This guide will help you get started with Pali and explore all its features.
+Pali is a lightweight, zero-dependency foundation library for Python applications. This documentation helps you learn the core components, discover quick-start examples, and choose the right patterns for your project.
 
 ## Table of Contents
 
@@ -18,56 +18,32 @@ Welcome to the Pali documentation. This guide will help you get started with Pal
 - [Logging](guide/logging.md) - Setting up and using Pali's logging system
 - [A/B Testing](guide/ab-testing.md) - Built-in A/B testing capabilities
 
-### API Reference
-- [API Reference](api/reference.md) - Complete API documentation
+### Additional Resources
+- [Application Examples](guide/examples.md) - Real-world usage patterns
+- [Architecture](guide/architecture.md) - System design and core concepts
+- [Best Practices](guide/best-practices.md) - Recommended patterns and optimization
 
 ---
 
-## What is Pali?
+## Quick Start
 
-Pali is a lightweight initiator for Python applications that supports both Python 2.7+ and Python 3.4+.
+Choose your path based on what you need to build:
 
-Pali excels at:
-- Creating flexible data pipelines
-- Handling concurrent requests in messaging brokers
-- Simulating stress testing scenarios
-- Building API testing frameworks
+| If you need... | Start here |
+|---|---|
+| **Multi-threaded execution** | [Thread Pool Guide](guide/thread-pool.md) |
+| **Multi-stage workflows** | [Pipelines Guide](guide/pipeline.md) |
+| **Configuration management** | [Configuration Guide](guide/configuration.md) |
+| **Structured logging** | [Logging Guide](guide/logging.md) |
+| **Custom task implementations** | [Tasks Guide](guide/tasks.md) |
 
-## Quick Example
-
-```python
-from pali import worker, task
-
-class MyTask(task.Task):
-    def __init__(self, ident):
-        self.task_id = ident
-        self.result = None
-    
-    def _run(self):
-        # Your processing logic here
-        self.result = self.task_id * 2
-
-# Create tasks
-tasks = [MyTask(i) for i in range(10)]
-
-# Process with thread pool
-with worker.ThreadPool(3) as tpool:
-    for t in tasks:
-        tpool.append_task(t)
-
-# Check results
-results = [t.result for t in tasks]
-print(results)  # [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
-```
-
-For more examples, see the [examples/](../examples/) directory.
+---
 
 ## Next Steps
 
-- New to Pali? Start with [Installation](getting-started/installation.md) and [Quick Start](getting-started/quick-start.md)
-- Want to understand how it works? Read [Thread Pool](guide/thread-pool.md)
-- Building a pipeline? Check out [Pipelines](guide/pipeline.md)
-- Need to configure Pali? See [Configuration](guide/configuration.md)
+1. **New to Pali?** Start with [Installation](getting-started/installation.md) and [Quick Start](getting-started/quick-start.md)
+2. **See it in action?** Check out [Application Examples](guide/examples.md)
+3. **Ready to build?** Pick a guide from the table above based on your use case
 
 ## Contributing
 

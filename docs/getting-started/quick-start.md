@@ -9,15 +9,15 @@ Let's start with the simplest example - creating a task and processing it with a
 ### Step 1: Import Required Modules
 
 ```python
-from pali import task, worker
+from pali import Task, ThreadPool
 ```
 
 ### Step 2: Define a Task
 
-Create a custom task by extending `pali.task.Task`. The `_run()` method is where your work happens:
+Create a custom task by extending `Task`. The `_run()` method is where your work happens:
 
 ```python
-class GreetingTask(task.Task):
+class GreetingTask(Task):
     def __init__(self, name):
         super(GreetingTask, self).__init__()
         self.name = name
@@ -37,7 +37,7 @@ names = ["Alice", "Bob", "Charlie"]
 tasks = [GreetingTask(name) for name in names]
 
 # Process them with a thread pool (3 concurrent threads)
-with worker.ThreadPool(3) as tpool:
+with ThreadPool(3) as tpool:
     for t in tasks:
         tpool.append_task(t)
 
@@ -59,9 +59,9 @@ Hello, Charlie!
 Save this as `hello_pali.py`:
 
 ```python
-from pali import task, worker
+from pali import Task, ThreadPool
 
-class NumberTask(task.Task):
+class NumberTask(Task):
     def __init__(self, number):
         super(NumberTask, self).__init__()
         self.number = number
@@ -75,7 +75,7 @@ def main():
     tasks = [NumberTask(i) for i in range(10)]
     
     # Use 4 threads to process them
-    with worker.ThreadPool(4) as tpool:
+    with ThreadPool(4) as tpool:
         for t in tasks:
             tpool.append_task(t)
     
@@ -110,9 +110,9 @@ Expected output:
 
 ## Key Concepts
 
-- **Task**: A unit of work. Extend `pali.task.Task` and implement `_run()`
+- **Task**: A unit of work. Extend `Task` and implement `_run()`
 - **ThreadPool**: Manages a pool of worker threads. Use as a context manager with `with` statement
-- **Worker Thread**: Executes tasks from the pool. Number of threads is specified when creating ThreadPool
+- **Worker Thread**: Executes tasks from the pool. Number of threads is specified when creating `ThreadPool`
 
 ## What's Next?
 
@@ -129,7 +129,9 @@ No! The ThreadPool handles all thread creation and management for you.
 You can, but you'll need to manually stop the pool:
 
 ```python
-tpool = worker.ThreadPool(3)
+from pali import ThreadPool
+
+tpool = ThreadPool(3)
 for t in tasks:
     tpool.append_task(t)
 # ... do work ...
