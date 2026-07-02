@@ -1,7 +1,23 @@
-Release 1.0.1 (Draft)
+Release 1.1.0
 --------
-- Added documentation example tests for Task, Pipeline, and Logger modules
-- Refined README clarity and onboarding guidance
-- Improved documentation examples and release readiness
+Package structure and import improvements (100% backward compatible)
 
+Added
+- Top-level package imports: `from pali import ThreadPool, Task, Pipeline, ConfigManager, ...`
+- Logical subpackages: `pali.threading`, `pali.task`, `pali.config`, `pali.utils`
+- Import compatibility test suite (`tests/misc/test_imports.py`)
+- ConfigManager documentation example tests (`tests/docs_examples/test_configuration_examples.py`)
+- Docs example tests wired into `tests.sh`
 
+Changed
+- Reorganized internal modules into subpackages while preserving all existing import paths via `sys.modules` aliasing
+- Updated PyPI short description to "Python Applications Lightweight Initiator"
+- Improved README onboarding with micro examples and clearer documentation navigation
+- Refined Quick Start and documentation index structure
+
+Fixed
+- No functional bug fixes in this release
+
+Notes for upgraders
+- No code changes required; existing imports such as `from pali.worker import ThreadPool` continue to work
+- New code may optionally use shorter imports: `from pali import ThreadPool, Task`

@@ -27,6 +27,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-06-20
+
+### Added
+- Top-level package imports for core public APIs (`from pali import ThreadPool, Task, Pipeline, ConfigManager, ...`).
+- Logical subpackages: `pali.threading`, `pali.task`, `pali.config`, and `pali.utils`.
+- Import compatibility test suite (`tests/misc/test_imports.py`) covering old and new import styles.
+- ConfigManager documentation example tests (`tests/docs_examples/test_configuration_examples.py`).
+- Docs example tests added to `tests.sh`.
+
+### Changed
+- Reorganized internal modules into subpackages with 100% backward compatibility via `sys.modules` aliasing.
+- Updated PyPI short description to "Python Applications Lightweight Initiator".
+- Improved README onboarding with micro examples and clearer documentation navigation.
+- Refined Quick Start and documentation index structure.
+
+### Fixed
+- No functional bug fixes in this release.
+
+### Deprecated
+- [No deprecations in this release]
+
+### Removed
+- [No removals in this release]
+
+### Security
+- [No security issues reported for this release]
+
+---
+
 ## [1.0.1] - 2026-06-06
 
 ### Added
@@ -152,7 +181,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-### 1.0.0 (Current)
+### 1.1.0 (Current)
+- Package reorganization into subpackages, top-level imports, expanded test coverage, and documentation improvements
+
+### 1.0.1
+- Documentation example tests, README refinements, and documentation quality improvements
+
+### 1.0.0
 - First stable release with core ThreadPool, Task, Pipeline, Configuration, and A/B Testing capabilities
 
 ### 0.0.6

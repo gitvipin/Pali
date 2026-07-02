@@ -1,7 +1,7 @@
 import sys
 
 name = "pali"
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 
 # Import directly from moved module files (avoid circular imports)
 from pali.task.task import Task
